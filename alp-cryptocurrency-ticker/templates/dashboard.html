@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block base_content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function refresh_views() {
+        $('#price_viewer').load('/{{ app_subdomain }}/price_viewer');
+        $('#message_log').load('/{{ app_subdomain }}/message_log');
+    }
+
+    function update_prices() {
+        $.post('/{{ app_subdomain }}/price_viewer',
+            {
+            case: "UPDATE_PRICES",
+            update_prices: true
+            },
+            function(data, status) {
+            $('#price_viewer').load('/{{ app_subdomain }}/price_viewer');
+            }
+        );
+    }
+
+    function change_include_in_message(currency_id, checkbox) {
+        $.post('/{{ app_subdomain }}/price_viewer',
+            {
+            case: "CHANGE_IN_MESSAGE",
+            currency_id: currency_id,
+            in_message_checked: checkbox.checked
+            },
+            function(data, status) {
+            $('#price_viewer').load('/{{ app_subdomain }}/price_viewer');
+            }
+        );
+    }
+
+    function add_currency() {
+        new_currency_element = document.getElementById("new_currency_id")
+        new_currency_id = new_currency_element.value;
+        new_currency_element.value = ""
+
+        $.post('/{{ app_subdomain }}/price_viewer',
+            {
+            case: "ADD_CURRENCY",
+            new_currency_id: new_currency_id
+            },
+            function(data, status) {
+            $('#price_viewer').load('/{{ app_subdomain }}/price_viewer');
+            }
+        );
+    }
+
+    function delete_currency(delete_currency_id, in_message_checked) {
+        $.post('/{{ app_subdomain }}/price_viewer',
+            {
+            case: "DELETE_CURRENCY",
+            delete_currency_id: delete_currency_id,
+            in_message_checked: in_message_checked
+            },
+            function(data, status) {
+            $('#price_viewer').load('/{{ app_subdomain }}/price_viewer');
+            }
+        );
+    }
+
+    function set_ticker_message(ticker_message) {
+        if (ticker_message == "") {
+            message_input = document.getElementById("message_override");
+            message_input.value = ""
+            }
+
+        $.post('/{{ app_subdomain }}/message_control',
+            {
+            ticker_message: ticker_message
+            },
+            function(data, status) {
+            $('#ticker_message').load('/{{ app_subdomain }}/ticker_message');
+            }
+        );
+    }
+
+    function save_prices() {
+        $.post('/{{ app_subdomain }}/save_prices');
+         }
+
+    $(document).ready(refresh_views);
+    setInterval(refresh_views, 3000);
+</script>
+
+<button id="update_now" onclick="update_prices()">Update Now</button>
+<button id="save_prices_button" onclick="save_prices()">Save Prices to Database</button>
+
+<div id="price_viewer">
+    {% include 'price_viewer.html' %}
+</div>
+
+<table>
+    <tr>
+        <td><input id="new_currency_id"></td>
+        <td><button id="add_currency_button" onclick="add_currency()">Add</button></td>
+    </tr>
+</table>
+
+<div id="message_control">
+    {% include 'message_control.html' %}
+</div>
+
+<div id="message_log">
+    {% include 'message_log.html' %}
+</div>
+
+{% endblock base_content %}

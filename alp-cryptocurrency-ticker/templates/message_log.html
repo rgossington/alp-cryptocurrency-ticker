@@ -1,0 +1,19 @@
+<h3>Message Log</h3>
+
+<div style="overflow-y: auto; height: 400px;">
+    <table>
+        <tr>
+            <td>Time stamp</td>
+            <td>Message</td>
+        </tr>
+
+        {% for row in message_data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+

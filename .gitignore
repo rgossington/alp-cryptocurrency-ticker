@@ -1,0 +1,4 @@
+.idea/
+__pycache__/
+venv/
+alp-cryptocurrency-ticker/__pycache__/

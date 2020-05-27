@@ -1,0 +1,23 @@
+<p>Next Update Due (UTC): {{ next_update_str }}</p>
+<table>
+    <tr>
+        <td>Coin Id</td>
+        <td>Symbol</td>
+        <td>Price</td>
+        <td>Change</td>
+        <td>In Message</td>
+    </tr>
+
+    {% for coin in coins %}
+    <tr>
+        <td>{{ coin.get_id() }}</td>
+        <td>{{ coin.get_symbol_str() }}</td>
+        <td style="color: {{ coin.get_price_colour_str() }}">{{ coin.get_price_str() }}</td>
+        <td style="color: {{ coin.get_price_colour_str() }}">{{ coin.get_price_change_str() }}</td>
+        <td><input id="include_in_message_checkbox" type="checkbox" {{ coin.get_checkbox_str() }}
+                   onchange="change_include_in_message('{{ coin.get_id() }}', this)"></td>
+        <td><button id="delete_currency_button" onclick="delete_currency('{{ coin.get_id() }}', '{{ coin.get_checkbox_str() }}')">Delete</button></td>
+    </tr>
+    {% endfor %}
+
+</table>
