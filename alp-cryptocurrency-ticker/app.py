@@ -8,7 +8,7 @@ from multiprocessing.connection import Listener
 import sqlite3
 
 app = Flask(__name__)
-app_subdomain = "alp-crypocurrency-ticker"
+app_subdomain = "alp-cryptocurrency-ticker"
 app_name = "Alp Cryptocurrency Ticker"
 
 timestamp_format = "%Y-%m-%d %H:%M:%S"
